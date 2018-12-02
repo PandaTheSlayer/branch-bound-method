@@ -8,33 +8,29 @@ use Tsp\Location;
 
 class BranchBound
 {
-    protected $locations = [];
-    protected $costMatrix = [];
+    private $locations = [];
+    private $costMatrix = [];
 
-    /**
-     * @return array
-     */
-    public function getLocations()
+    public function __construct(Location ...$locations)
     {
-        return $this->locations;
+        $this->locations = $locations;
     }
 
     /**
      * @return array
      */
-    public function getCostMatrix()
+    public function getCostMatrix() : array
     {
+        if (empty($this->costMatrix))
+            $this->costMatrix = $this->calculateCostMatrix();
+
         return $this->costMatrix;
     }
 
-    public function addLocation(Location $location)
-    {
-        $this->locations[] = $location;
-    }
 
-    public function calculateCostMatrix()
+    public function calculateCostMatrix() : array
     {
-        $locations = $this->getLocations();
+        $locations = $this->locations;
 
         $costMatrix = [];
 
@@ -50,7 +46,7 @@ class BranchBound
         return $costMatrix;
     }
 
-    public function calculateMinRow()
+    public function calculateMinRow() : array
     {
         if (empty($this->costMatrix)) {
             $this->costMatrix = $this->calculateCostMatrix();
@@ -62,5 +58,28 @@ class BranchBound
         }
 
         return $minRowArr;
+    }
+
+    public function getMatrixColumn(int $pos) : array
+    {
+        return array_column($this->getCostMatrix(), $pos);
+    }
+
+    public function calculateMinDivRow() : array
+    {
+        $minRow = $this->calculateMinRow();
+        $minDivRow = [];
+
+        foreach ($minRow as $key => $value) {
+            $column = $this->getMatrixColumn($key);
+            $row = [];
+            foreach ($column as $c) {
+                $row[] = $c - $minRow[$key];
+            }
+
+            $minDivRow[] = min($row);
+        }
+
+        return $minDivRow;
     }
 }

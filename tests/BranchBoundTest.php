@@ -11,24 +11,12 @@ class BranchBoundTest extends TestCase
 
     protected function setUp()
     {
-        $branchBound = new BranchBound();
-        $branchBound->addLocation(new Location(54.5, 50));
-        $branchBound->addLocation(new Location(55.5, 53));
-        $branchBound->addLocation(new Location(58.5, 59));
-        $branchBound->addLocation(new Location(33.5, 49));
-
-        $this->branchBound = $branchBound;
-    }
-
-    public function testAddLocation()
-    {
-        $locationsBefore = $this->branchBound->getLocations();
-        $locationNew = new Location(54.5, 66.5);
-
-        $locationsAfter = array_merge($locationsBefore, [$locationNew]);
-
-        $this->branchBound->addLocation($locationNew);
-        $this->assertEquals($locationsAfter, $this->branchBound->getLocations());
+        $this->branchBound = new BranchBound(
+            new Location(54.5, 50),
+            new Location(55.5, 53),
+            new Location(58.5, 59),
+            new Location(33.5, 49)
+        );
     }
 
     public function testCalculateMatrix()
@@ -45,5 +33,18 @@ class BranchBoundTest extends TestCase
     {
         $minRowArr = $this->branchBound->calculateMinRow();
         $this->assertEquals([221, 221, 492, 2336], $minRowArr);
+    }
+
+    public function testGetMatrixColumn()
+    {
+        $this->branchBound->calculateCostMatrix();
+        $column = $this->branchBound->getMatrixColumn(0);
+        $this->assertEquals([INF, 221, 708, 2336], $column);
+    }
+
+    public function testCalculateMinDivRow()
+    {
+        $this->branchBound->calculateCostMatrix();
+        $this->assertEquals([0, 0, 0, 0], $this->branchBound->calculateMinDivRow());
     }
 }
