@@ -6,18 +6,10 @@ use Tsp\Location;
 
 class BranchBoundTest extends TestCase
 {
-    public function testAddLocation()
-    {
-        $bnb = new BranchBound();
-        $location1 = new Location(54.5, 66.5);
-        $location2 = new Location(55.5, 66.6);
+    /** @var BranchBound */
+    protected $branchBound;
 
-        $bnb->addLocation($location1);
-        $bnb->addLocation($location2);
-        $this->assertEquals([$location1, $location2], $bnb->getLocations());
-    }
-
-    public function testCalculateMatrix()
+    protected function setUp()
     {
         $branchBound = new BranchBound();
         $branchBound->addLocation(new Location(54.5, 50));
@@ -25,11 +17,33 @@ class BranchBoundTest extends TestCase
         $branchBound->addLocation(new Location(58.5, 59));
         $branchBound->addLocation(new Location(33.5, 49));
 
+        $this->branchBound = $branchBound;
+    }
+
+    public function testAddLocation()
+    {
+        $locationsBefore = $this->branchBound->getLocations();
+        $locationNew = new Location(54.5, 66.5);
+
+        $locationsAfter = array_merge($locationsBefore, [$locationNew]);
+
+        $this->branchBound->addLocation($locationNew);
+        $this->assertEquals($locationsAfter, $this->branchBound->getLocations());
+    }
+
+    public function testCalculateMatrix()
+    {
         $this->assertEquals([
-            [INF,  221,  708,  2336, 221],
-            [221,  INF,  492,  2465, 221],
-            [708,  492,  INF,  2878, 492],
-            [2336, 2465, 2878, INF,  2336]
-        ], $branchBound->calculateCostMatrix());
+            [INF,  221,  708,  2336],
+            [221,  INF,  492,  2465],
+            [708,  492,  INF,  2878],
+            [2336, 2465, 2878, INF ]
+        ], $this->branchBound->calculateCostMatrix());
+    }
+
+    public function testCalculateMinRow()
+    {
+        $minRowArr = $this->branchBound->calculateMinRow();
+        $this->assertEquals([221, 221, 492, 2336], $minRowArr);
     }
 }

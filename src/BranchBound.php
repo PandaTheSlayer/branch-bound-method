@@ -45,18 +45,22 @@ class BranchBound
             }
         }
 
-        $this->calculateMinRow($costMatrix);
         $this->costMatrix = $costMatrix;
 
         return $costMatrix;
     }
 
-    private function calculateMinRow(array &$costMatrix)
+    public function calculateMinRow()
     {
-        foreach ($costMatrix as $key => $row) {
-            $costMatrix[$key][] = min($costMatrix[$key]);
+        if (empty($this->costMatrix)) {
+            $this->costMatrix = $this->calculateCostMatrix();
         }
 
-        return $costMatrix;
+        $minRowArr = [];
+        foreach ($this->costMatrix as $key => $row) {
+            $minRowArr[$key] = min($this->costMatrix[$key]);
+        }
+
+        return $minRowArr;
     }
 }
