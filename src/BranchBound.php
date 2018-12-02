@@ -40,12 +40,21 @@ class BranchBound
 
         for ($m = 0; $m < count($locations); $m++) {
             for ($n = 0; $n < count($locations); $n++) {
-                if ($m == $n) {
-                    $costMatrix[$m][$n] = INF;
-                } else {
-                    $costMatrix[$m][$n] = $locations[$m]->distance($locations[$n]);
-                }
+                $m == $n ? $costMatrix[$m][$n] = INF
+                         : $costMatrix[$m][$n] = $locations[$m]->distance($locations[$n]);
             }
+        }
+
+        $this->calculateMinRow($costMatrix);
+        $this->costMatrix = $costMatrix;
+
+        return $costMatrix;
+    }
+
+    private function calculateMinRow(array &$costMatrix)
+    {
+        foreach ($costMatrix as $key => $row) {
+            $costMatrix[$key][] = min($costMatrix[$key]);
         }
 
         return $costMatrix;
