@@ -52,4 +52,5 @@ class Location
 
         return (int) $distance = self::EARTH_RADIUS * $c;
     }
+
 }
