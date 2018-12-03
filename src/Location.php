@@ -4,40 +4,21 @@
 namespace Tsp;
 
 
-/**
- * Class Location
- * @package Tsp
- */
 class Location
 {
     const EARTH_RADIUS = 6371;
 
-    /**
-     * @var float
-     */
     public $latitude;
-    /**
-     * @var float
-     */
     public $longitude;
 
-    /**
-     * Location constructor.
-     * @param float $latitude
-     * @param float $longitude
-     */
-    public function __construct($latitude, $longitude)
+    public function __construct(float $latitude, float $longitude)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
     }
 
 
-    /**
-     * @param Location $p2
-     * @return int
-     */
-    public function distance(Location $p2)
+    public function distance(Location $p2) : int
     {
         $phi1 = deg2rad($this->latitude);
         $phi2 = deg2rad($p2->latitude);

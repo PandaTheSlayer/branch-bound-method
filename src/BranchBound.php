@@ -16,9 +16,6 @@ class BranchBound
         $this->locations = $locations;
     }
 
-    /**
-     * @return array
-     */
     public function getCostMatrix() : array
     {
         if (empty($this->costMatrix))
@@ -26,7 +23,6 @@ class BranchBound
 
         return $this->costMatrix;
     }
-
 
     public function calculateCostMatrix() : array
     {

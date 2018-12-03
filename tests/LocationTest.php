@@ -4,11 +4,6 @@ use PHPUnit\Framework\TestCase;
 
 class LocationTest extends TestCase
 {
-    public function testCanCreateLocation()
-    {
-        $location = new \Tsp\Location(54.5, 65.4);
-        $this->assertInstanceOf(\Tsp\Location::class, $location);
-    }
 
     public function testCalculateDistanceBetweenTwoLocations()
     {
