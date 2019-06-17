@@ -1,9 +1,13 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         cacheResult="false"
          colors="true">
     <testsuites>
-        <testsuite name="unit">
-            <directory>./tests/</directory>
+<!--        <testsuite name="unit">-->
+<!--            <directory>./tests/</directory>-->
+<!--        </testsuite>-->
+        <testsuite name="Acceptance">
+            <directory suffix=".phpt">tests/Acceptance</directory>
         </testsuite>
     </testsuites>
 

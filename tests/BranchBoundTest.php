@@ -1,21 +1,21 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Tsp\BranchBound;
-use Tsp\Location;
+use Tsp\TspBranchBound;
+use Tsp\TspLocation;
 
-class BranchBoundTest extends TestCase
+class ranchBoundTest extends TestCase
 {
-    /** @var BranchBound */
+    /** @var TspBranchBound */
     protected $branchBound;
 
     protected function setUp()
     {
-        $this->branchBound = new BranchBound(
-            new Location(54.5, 50),
-            new Location(55.5, 53),
-            new Location(58.5, 59),
-            new Location(33.5, 49)
+        $this->branchBound = new TspBranchBound(
+            new TspLocation(54.5, 50),
+            new TspLocation(55.5, 53),
+            new TspLocation(58.5, 59),
+            new TspLocation(33.5, 49)
         );
     }
 

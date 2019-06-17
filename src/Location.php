@@ -1,37 +1,60 @@
 <?php
 
 
-namespace Tsp;
+namespace Panda\Tsp;
 
+use RuntimeException;
 
 class Location
 {
-    const EARTH_RADIUS = 6371;
-
     public $latitude;
     public $longitude;
+    public $id;
 
-    public function __construct(float $latitude, float $longitude)
+    public function __construct($latitude, $longitude, $id = null)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->id = $id;
     }
 
-
-    public function distance(Location $p2) : int
+    public static function getInstance($location)
     {
-        $phi1 = deg2rad($this->latitude);
-        $phi2 = deg2rad($p2->latitude);
-        $deltaPhi = $phi2 - $phi1;
+        $location = (array)$location;
+        if (empty($location['latitude']) || empty($location['longitude'])) {
+            throw new RuntimeException('Location::getInstance could not load location');
+        }
 
-        $lambda1 = deg2rad($this->longitude);
-        $lambda2 = deg2rad($p2->longitude);
-        $deltaLambda = $lambda2 - $lambda1;
+        // Instantiate the Location.
+        $id = isset($location['id']) ? $location['id'] : null;
+        $tspLocation = new Location($location['latitude'], $location['longitude'], $id);
 
-        $a = sin($deltaPhi / 2)**2 + cos($phi1) * cos($phi2) * sin($deltaLambda / 2)**2;
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-        return (int) $distance = self::EARTH_RADIUS * $c;
+        return $tspLocation;
     }
 
+    public static function distance($lat1, $lon1, $lat2, $lon2, $unit = 'M')
+    {
+        if ($lat1 == $lat2 && $lon1 == $lon2) {
+            return 0;
+        }
+
+        $theta = $lon1 - $lon2;
+        $dist = sin(deg2rad($lat1))
+            * sin(deg2rad($lat2))
+            + cos(deg2rad($lat1))
+            * cos(deg2rad($lat2))
+            * cos(deg2rad($theta));
+        $dist = acos($dist);
+        $dist = rad2deg($dist);
+        $miles = $dist * 60 * 1.1515;
+        $unit = strtoupper($unit);
+
+        if ($unit == "K") {
+            return ($miles * 1.609344);
+        } elseif ($unit == "N") {
+            return ($miles * 0.8684);
+        } else {
+            return $miles;
+        }
+    }
 }
