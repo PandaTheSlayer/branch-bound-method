@@ -3,7 +3,6 @@
 
 namespace Panda\Tsp\Console;
 
-
 use Panda\Tsp\BranchBound;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +38,7 @@ class BranchBoundCommand extends Command
         });
         $latitudeQuestion = new Question("Please enter latitude (Only numbers between -90 and 90): ");
 
-        $latitudeQuestion->setValidator(function($value) {
+        $latitudeQuestion->setValidator(function ($value) {
             if (!is_numeric($value) || ($value > 90 || $value < -90)) {
                 throw new \InvalidArgumentException("Please! Provide valid number");
             }
@@ -47,7 +46,7 @@ class BranchBoundCommand extends Command
         $latitudeQuestion->setMaxAttempts(3);
 
         $longitudeQuestion = new Question("Please enter longitude: (Only numbers between -180 and 180)");
-        $longitudeQuestion->setValidator(function($value) {
+        $longitudeQuestion->setValidator(function ($value) {
             if (!is_numeric($value) || ($value > 180 || $value < -180)) {
                 throw new \InvalidArgumentException("Please! Provide valid number");
             }
@@ -82,12 +81,10 @@ class BranchBoundCommand extends Command
                 'latitude' => $latitude,
                 'longitude' => $longitude
             ]);
-
         } while (!$helper->ask($input, $output, $exitQuestion));
 
         $ans = $this->service->solve();
         $totalCost = ceil($ans['cost']);
         $output->writeln("Total cost: {$totalCost}");
-
     }
 }

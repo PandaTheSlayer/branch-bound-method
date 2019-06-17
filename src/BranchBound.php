@@ -36,7 +36,7 @@ class BranchBound
      * @param string $name The name of the BranchBound.
      * @param array $locations An array of locations.
      *
-     * @return  object  BranchBound instance.
+     * @return  BranchBound  BranchBound instance.
      *
      * @throws  Exception if an error occurs.
      */
