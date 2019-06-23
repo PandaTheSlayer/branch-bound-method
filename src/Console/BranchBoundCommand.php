@@ -3,6 +3,7 @@
 
 namespace Panda\Tsp\Console;
 
+use InvalidArgumentException;
 use Panda\Tsp\BranchBound;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,7 +41,7 @@ class BranchBoundCommand extends Command
 
         $latitudeQuestion->setValidator(function ($value) {
             if (!is_numeric($value) || ($value > 90 || $value < -90)) {
-                throw new \InvalidArgumentException("Please! Provide valid number");
+                throw new InvalidArgumentException("Please! Provide valid number");
             }
         });
         $latitudeQuestion->setMaxAttempts(3);
@@ -48,7 +49,7 @@ class BranchBoundCommand extends Command
         $longitudeQuestion = new Question("Please enter longitude: (Only numbers between -180 and 180)");
         $longitudeQuestion->setValidator(function ($value) {
             if (!is_numeric($value) || ($value > 180 || $value < -180)) {
-                throw new \InvalidArgumentException("Please! Provide valid number");
+                throw new InvalidArgumentException("Please! Provide valid number");
             }
         });
         $latitudeQuestion->setMaxAttempts(3);
